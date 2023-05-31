@@ -1,0 +1,8 @@
+#makeargv.c#
+makeargv.c
+myfile.txt
+outcapture
+outputcapture
+outputcapture.c
+outputcapture.c~
+test

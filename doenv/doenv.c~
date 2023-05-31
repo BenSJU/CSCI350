@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+extern char** environ;
+
+/*
+ * The code for printing this program's environment,
+ * from the textbook.
+ */
+void printenviron()
+{
+  int i;
+  for (i = 0; environ[i] != NULL; i++)
+    printf("environ[%d]: %s\n", i, environ[i]);
+}
+
+int main(int argc, char** argv)
+{
+  // TODO: add more code here!
+  // Part 1 attempt
+  int x;
+  if (argc == 1)
+    {
+      for (x = 0; getenv(environ[x]) != NULL; x++)
+	{
+	  printf("%s\n", getenv(environ[x]));
+	} 
+    }
+
+  printenviron();
+
+  return 0;
+}

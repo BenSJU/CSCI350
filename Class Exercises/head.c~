@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+
+int main(int argc, char** argv)
+{
+  if (argc != 3)
+  {
+    fprintf(stderr, "Usage: %s filename num\n", argv[0]);
+    exit(EXIT_FAILURE);
+  }
+
+  // grab the file to read and the number of characters from arguments
+  char* filename = argv[1];
+  int numc = atoi(argv[2]);
+
+  // open the file; print a message and exit if error (indicated by the
+  // return value of open)
+  int fd;
+  while ((fd = open(filename, O_RDONLY)) == -1 && errno == EINTR)
+    ;
+  if (fd == -1)
+    {
+      perror("Failed to open file");
+      exit(EXIT_FAILURE);
+    }
+
+  // allocate space for the number of bytes.  Dynamically allocated
+  // because we don't know the size until we get the program argument!
+
+  // read into the buffer.  Again, error handling and use of errno to
+  // see what went wrong!
+
+  // write the contents of the buffer to standard output's file descriptor
+  // Again, error handling!
+
+  // don't forget to free any allocated memory!
+
+  // close the file before leaving!
+
+  return 0;
+}

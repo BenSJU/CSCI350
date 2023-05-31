@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
+
+pthread_mutex_t thelock = PTHREAD_MUTEX_INITIALIZER;
+
+void* lockdown(void* params)
+{
+  int threadnum = *(int*)params;
+
+  printf("Thread %d beginning!\n", threadnum);
+  pthread_mutex_lock(&thelock);
+  printf("Thread %d is going to sleep...\n", threadnum);
+  sleep(2);
+  printf("Thread %d done!\n", threadnum);
+  pthread_mutex_unlock(&thelock);
+
+  pthread_exit(NULL);
+}
+
+int main()
+{
+  int threadnums[] = {1, 2, 3, 4};
+  pthread_t threadids[4];
+
+  // create the threads
+  int i;
+  for (i = 0; i < 4; i++)
+  {
+    pthread_t tid;
+    if (pthread_create(&tid, NULL, lockdown, &threadnums[i]) != 0)
+    {
+      perror("Failed to create thread");
+      exit(1);
+    }
+    threadids[i] = tid;
+  }
+
+  // wait for all the child threads
+  for (i = 0; i < 4; i++)
+  {
+    if (pthread_join(threadids[i], NULL) != 0)
+    {
+      perror("Failed to join with the child thread");
+      exit(1);
+    }
+  }
+
+  printf("Parent is done!\n");
+
+  return 0;
+}

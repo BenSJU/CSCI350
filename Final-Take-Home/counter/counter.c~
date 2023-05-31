@@ -1,0 +1,38 @@
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
+
+static int do_count = 1;
+static void setdocount(int signo)
+{
+  do_count = 0;
+}
+
+int main()
+{
+
+  struct sigaction newaction;
+  newaction.sa_handler = setdocount;
+
+  if (sigaction(SIGINT, &newaction, NULL) == -1)
+    {
+      perror("Failed to set the signal handler");
+      exit(1);
+    }
+
+  int counter = 0;
+  while(1)
+    {
+      //stop counting when the global variable gets turned off,
+      //but keep the program running!
+      if (do_count == 1)
+	{
+	  counter++;
+	  printf("%d\n", counter);
+	  sleep(1);
+
+	}
+    }  
+}
